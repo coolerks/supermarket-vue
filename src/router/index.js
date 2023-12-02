@@ -119,16 +119,16 @@ const routes = [
                 name: 'Druid',
                 component: () => import( '../views/monitor/druid'), //mysql监控
             },
-            /**********************************疫情模块的路由******************************/
+            /**********************************汇报模块的路由******************************/
             {
                 path: '/covid19/map',
                 name: 'Covid19Map',
-                component: () => import( '../views/business/sign/map'), //疫情地图
+                component: () => import( '../views/business/sign/map'), //汇报地图
             },
             {
-                path: '/covid19/health',
+                path: '/report/health',
                 name: 'Health',
-                component: () => import( '../views/business/sign/health'), //健康打卡
+                component: () => import( '../views/business/sign/health'), //健康汇报
             },
 
             {

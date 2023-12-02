@@ -711,7 +711,7 @@
                         });
                         if (res === "confirm") {
                             const { data: res } = await this.$http.post(
-                                "outStock/addOutStock",
+                                "/business/outStock/addOutStock",
                                 this.addRuleForm
                             );
                             if (res.success) {

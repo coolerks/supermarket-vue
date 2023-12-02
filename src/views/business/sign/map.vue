@@ -3,14 +3,14 @@
     <el-breadcrumb separator="/" style="padding-left:10px;padding-bottom:10px;font-size:12px;">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>健康报备</el-breadcrumb-item>
-      <el-breadcrumb-item>全国疫情</el-breadcrumb-item>
+      <el-breadcrumb-item>全国汇报</el-breadcrumb-item>
     </el-breadcrumb>
     <!--    初始化echarts需要个有宽高的盒子-->
     <el-row :gutter="10">
       <el-col :span="12">
         <div class="grid-content bg-purple">
             <el-tabs type="border-card">
-              <el-tab-pane label="疫情概览">
+              <el-tab-pane label="汇报概览">
                 <el-table  v-loading="loading" border :data="info" style="width: 100%" height="495">
                   <el-table-column prop="name" label="名称" width="150"></el-table-column>
                   <el-table-column prop="value" label="数量" >
@@ -110,9 +110,9 @@ import jsonp from "jsonp";
 
 const option = {
   title: {
-    text: "疫情地图",
+    text: "汇报地图",
     link: "https://baidu.com",
-    subtext: "疫情地图",
+    subtext: "汇报地图",
     sublink: "https://baidu.com"
   },
   series: [

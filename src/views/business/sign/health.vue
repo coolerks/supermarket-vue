@@ -4,21 +4,21 @@
         <el-breadcrumb separator="/" style="padding-left:10px;padding-bottom:10px;font-size:12px;">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>健康报备</el-breadcrumb-item>
-            <el-breadcrumb-item>每日打卡</el-breadcrumb-item>
+            <el-breadcrumb-item>每日汇报</el-breadcrumb-item>
         </el-breadcrumb>
-        <!--       打卡部分 style="height: 590px;"-->
+        <!--       汇报部分 style="height: 590px;"-->
         <el-card style="height: 590px;">
             <el-alert
                     :closable="false"
                     style="margin-bottom: 20px;"
                     v-if="reported"
                     show-icon
-                    :title="'今日已成功打卡,勤洗手,戴口罩,不群聚,打卡时间:['+ruleForm.createTime+']'"
+                    :title="'今日已成功汇报，汇报时间:['+ruleForm.createTime+']'"
                     type="success">
             </el-alert>
             <h5 style="margin: 0px;padding: 0px;">基本信息  <div style="float: right;margin-bottom: 10px;vertical-align: center;">
-            <el-button @click="OpenHistory"   size="small" type="warning">签到记录</el-button>
-                <el-button style="margin-top: 5px;" type="primary"   size="small" @click="onSubmit" v-if="!reported">立即打卡</el-button>
+            <el-button @click="OpenHistory"   size="small" type="warning">汇报记录</el-button>
+                <el-button style="margin-top: 5px;" type="primary"   size="small" @click="onSubmit" v-if="!reported">立即汇报</el-button>
                 <el-button @click="reset"  size="small" v-if="!reported">重置</el-button>
             </div></h5>
 
@@ -32,9 +32,9 @@
                     <el-card class="box-card"  v-for="item in this.historyTable" :key="item.id" style="margin-bottom: 10px;">
                       <div class="text item">
                          <ul>
-                             <li>打卡人:{{userInfo.username}}</li>
-                             <li>打卡位置:{{item.address}}</li>
-                             <li>打卡时间:{{item.createTime}}</li>
+                             <li>汇报人:{{userInfo.username}}</li>
+                             <li>汇报位置:{{item.address}}</li>
+                             <li>汇报时间:{{item.createTime}}</li>
                              <li>超市状况:
                                  <div style="float: right">
                                        <el-tag v-if="item.situation===0" size="small" effect="dark" type="success">正常</el-tag>
@@ -65,7 +65,7 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <div class="grid-content bg-purple">
-                            <el-form-item label="打卡人">
+                            <el-form-item label="汇报人">
                                 <el-input v-model="userInfo.username" disabled></el-input>
                             </el-form-item>
                         </div>
@@ -73,7 +73,7 @@
                     <el-col :span="8">
                         <div class="grid-content bg-purple">
                             <div class="grid-content bg-purple">
-                                <el-form-item label="打卡时间">
+                                <el-form-item label="汇报时间">
                                     <el-date-picker
                                             disabled
                                             v-model="nowTime"
@@ -161,7 +161,7 @@
                     </el-col>
                     <el-col :span="6">
                         <div class="grid-content bg-purple">
-                    <el-form-item v-if="reported" label="打卡位置" prop="valueOrigin">
+                    <el-form-item v-if="reported" label="汇报位置" prop="valueOrigin">
                         <el-tag size="small">
                             {{ruleForm.address}}
                         </el-tag>
@@ -278,7 +278,7 @@
                 this.reportHistory();
             },
 
-            //打卡历史记录
+            //汇报历史记录
             async reportHistory(){
                 const { data: res } = await this.$http.get("business/health/history",{
                     params: this.queryMap
@@ -290,7 +290,7 @@
                     this.historyTotal=res.data.total;
                 }
             },
-            //今日是否已签到
+            //今日是否已汇报
             async isReport(){
                 const { data: res } = await this.$http.get("business/health/isReport");
                 if(!res.success){
@@ -303,12 +303,12 @@
                         this.reported=false;
                         this.$notify.warning({
                             title: '温馨提示',
-                            message: '您今日还未打卡,别忘记了哟~'
+                            message: '您今日还未汇报,别忘记了哟~'
                         });
                     }
                 }
             },
-            //打卡
+            //汇报
             onSubmit(){
                 this.$refs.ruleFormRef.validate(async valid => {
                     if (!valid) {
@@ -335,7 +335,7 @@
                 });
             },
 
-            //重置打卡表单
+            //重置汇报表单
             reset(){
                 this.$refs.ruleFormRef.clearValidate();
                 this.ruleForm={};
