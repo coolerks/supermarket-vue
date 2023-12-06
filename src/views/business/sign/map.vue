@@ -9,56 +9,58 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <div class="grid-content bg-purple">
-            <el-tabs type="border-card">
-              <el-tab-pane label="汇报概览">
-                <el-table  v-loading="loading" border :data="info" style="width: 100%" height="495">
-                  <el-table-column prop="name" label="名称" width="150"></el-table-column>
-                  <el-table-column prop="value" label="数量" >
-                    <template slot-scope="scope">
-                      <el-tag effect="plain" size="mini">{{scope.row.value}}人</el-tag>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="yesterday" label="较昨日" width="100">
-                    <template slot-scope="scope">
-                      <el-tag effect="plain" size="mini" v-if="scope.row.yesterday>0" type="danger">{{scope.row.yesterday}} 人</el-tag>
-                      <el-tag effect="plain" size="mini" v-else type="success">{{scope.row.yesterday}}人</el-tag>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="name" label="时间"> <span style="font-size: 11px;">{{times}}</span></el-table-column>
-                </el-table>
-              </el-tab-pane>
-              <el-tab-pane label="TOP10城市" >
-                <el-table
+          <el-tabs type="border-card">
+            <el-tab-pane label="汇报概览">
+              <el-table v-loading="loading" border :data="info" style="width: 100%" height="495">
+                <el-table-column prop="name" label="名称" width="150"></el-table-column>
+                <el-table-column prop="value" label="数量">
+                  <template slot-scope="scope">
+                    <el-tag effect="plain" size="mini">{{ scope.row.value }}人</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="yesterday" label="较昨日" width="100">
+                  <template slot-scope="scope">
+                    <el-tag effect="plain" size="mini" v-if="scope.row.yesterday>0" type="danger">
+                      {{ scope.row.yesterday }} 人
+                    </el-tag>
+                    <el-tag effect="plain" size="mini" v-else type="success">{{ scope.row.yesterday }}人</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="name" label="时间"><span style="font-size: 11px;">{{ times }}</span>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
+            <el-tab-pane label="TOP10城市">
+              <el-table
 
-                        height="495"
-                        border
-                    :data="top10"
-                    style="width: 100%;font-size: 10px;">
+                  height="495"
+                  border
+                  :data="top10"
+                  style="width: 100%;font-size: 10px;">
 
-              <el-table-column
+                <el-table-column
 
-                      prop="name"
-                      label="城市名称"
-                      width="180">
-              </el-table-column>
-              <el-table-column
+                    prop="name"
+                    label="城市名称"
+                    width="180">
+                </el-table-column>
+                <el-table-column
 
-                      prop="ename"
-                      label="English">
-              </el-table-column>
-                  <el-table-column
-                          prop="jwsrNum"
-                          label="确诊人数"
-                          width="180">
-                    <template slot-scope="scope">
-                      <el-tag v-text="scope.row.jwsrNum+'人'" size="mini" type="danger" effect="plain"></el-tag>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </el-tab-pane>
+                    prop="ename"
+                    label="English">
+                </el-table-column>
+                <el-table-column
+                    prop="jwsrNum"
+                    label="确诊人数"
+                    width="180">
+                  <template slot-scope="scope">
+                    <el-tag v-text="scope.row.jwsrNum+'人'" size="mini" type="danger" effect="plain"></el-tag>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
 
-            </el-tabs>
-
+          </el-tabs>
 
 
         </div>
@@ -75,10 +77,10 @@
       <el-col :span="24">
         <div class="grid-content bg-purple">
           <el-card>
-            <el-table  stripe  :data="tableData" style="width: 100%;">
+            <el-table stripe :data="tableData" style="width: 100%;">
               <el-table-column type="expand">
                 <template slot-scope="scope">
-                  <el-table  :data="scope.row.city" style="width: 100%">
+                  <el-table :data="scope.row.city" style="width: 100%">
                     <el-table-column prop="name" label="城市/区" width="200"></el-table-column>
 
                     <el-table-column sortable label="现存确诊" prop="econNum"></el-table-column>
@@ -151,11 +153,11 @@ const option = {
       show: true,
       pieces: [
         //分段
-        { min: 10000 },
-        { min: 1000, max: 9990 },
-        { min: 100, max: 999 },
-        { min: 10, max: 99 },
-        { min: 1, max: 9 }
+        {min: 10000},
+        {min: 1000, max: 9990},
+        {min: 100, max: 999},
+        {min: 10, max: 99},
+        {min: 1, max: 9}
       ],
       inRange: {
         symbol: "rect",
@@ -173,11 +175,11 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      times:'',
-      loading:true,
+      times: '',
+      loading: true,
       info: [],
       tableData: [],
-      top10:[],
+      top10: [],
     };
   },
   mounted() {
@@ -190,23 +192,23 @@ export default {
   methods: {
     getData() {
       jsonp(
-        "https://interface.sina.cn/news/wap/fymap2020_data.d.json?_=1580892522427", //接口
-        {},
-        (err, data) => {
-          if (!err) {
-            //代表请求数据成功
-            let list = data.data.list.map(item => ({
-              name: item.name,
-              value: item.value
-            })); //从接口获取到数据后，使用map()函数，进行接口数据映射
-            option.series[0].data = list;
-            this.tableData = data.data.list;
+          "https://interface.sina.cn/news/wap/fymap2020_data.d.json?_=1580892522427", //接口
+          {},
+          (err, data) => {
+            if (!err) {
+              //代表请求数据成功
+              let list = data.data.list.map(item => ({
+                name: item.name,
+                value: item.value
+              })); //从接口获取到数据后，使用map()函数，进行接口数据映射
+              option.series[0].data = list;
+              this.tableData = data.data.list;
 
-            this.mychart.setOption(option);
-            //这行代码能执行的前提是DOM已经渲染完成，只有DOM已渲染完成才能echarts初始化
-            this.buildTable(data); //构建表格数据
+              this.mychart.setOption(option);
+              //这行代码能执行的前提是DOM已经渲染完成，只有DOM已渲染完成才能echarts初始化
+              this.buildTable(data); //构建表格数据
+            }
           }
-        }
       );
     },
     /**
@@ -254,8 +256,8 @@ export default {
         value: data.sustotal,
         yesterday: data.add_daily["wjw_addsus_new"]
       };
-      this.times=data.times;
-      this.top10=data.jwsrTop;
+      this.times = data.times;
+      this.top10 = data.jwsrTop;
 
       this.info.push(data1);
       this.info.push(data2);
@@ -265,7 +267,7 @@ export default {
       this.info.push(data6);
       this.info.push(data7);
       this.info.push(data8);
-      this.loading=false;
+      this.loading = false;
     }
   }
 };

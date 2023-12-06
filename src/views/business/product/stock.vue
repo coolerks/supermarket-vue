@@ -25,18 +25,18 @@
             <el-form size="mini" :inline="true" :model="queryMap" class="demo-form-inline">
               <el-form-item>
                 <el-cascader
-                        placeholder="请选择分类查询"
-                        :change-on-select="true"
-                        @change="selectChange"
-                        v-model="categorykeys"
-                        :props="searchSelectProps"
-                        :options="catetorys"
-                        clearable
+                    placeholder="请选择分类查询"
+                    :change-on-select="true"
+                    @change="selectChange"
+                    v-model="categorykeys"
+                    :props="searchSelectProps"
+                    :options="catetorys"
+                    clearable
                 ></el-cascader>
               </el-form-item>
 
               <el-form-item>
-                <el-input clearable @clear="search" v-model="queryMap.name" placeholder="商品名称" ></el-input>
+                <el-input clearable @clear="search" v-model="queryMap.name" placeholder="商品名称"></el-input>
               </el-form-item>
 
               <el-form-item>
@@ -54,31 +54,32 @@
                 <!--              />-->
                 <!--            </template>-->
                 <template slot-scope="scope">
-                  <el-popover placement="right"  trigger="hover">
-                    <img :src="scope.row.imageUrl"  style="height: 200px;width: 200px"/>
-                    <img  slot="reference" :src="scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 21px;width: 21px;cursor: pointer">
+                  <el-popover placement="right" trigger="hover">
+                    <img :src="scope.row.imageUrl" style="height: 200px;width: 200px"/>
+                    <img slot="reference" :src="scope.row.imageUrl" :alt="scope.row.imgUrl"
+                         style="height: 21px;width: 21px;cursor: pointer">
                   </el-popover>
                 </template>
               </el-table-column>
               <el-table-column prop="name" label="名称" width="140"></el-table-column>
               <el-table-column prop="model" label="规格" width="120"></el-table-column>
               <el-table-column prop="stock" label="库存">
-                  <template slot-scope="scope">
-                      <el-tag size="mini" closable>{{scope.row.stock}}</el-tag>
-                  </template>
+                <template slot-scope="scope">
+                  <el-tag size="mini" closable>{{ scope.row.stock }}</el-tag>
+                </template>
               </el-table-column>
               <el-table-column prop="unit" label="单位"></el-table-column>
             </el-table>
             <!-- 分页 -->
             <el-pagination
-              style="margin-top:20px;"
-              background
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="queryMap.pageNum"
-              :page-sizes="[9, 10, 15, 20]"
-              layout="total, prev, pager, next, jumper,sizes"
-              :total="total"
+                style="margin-top:20px;"
+                background
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="queryMap.pageNum"
+                :page-sizes="[9, 10, 15, 20]"
+                layout="total, prev, pager, next, jumper,sizes"
+                :total="total"
             ></el-pagination>
           </el-card>
         </div>
@@ -89,6 +90,7 @@
 
 <script>
 import echarts from "echarts";
+
 export default {
   data() {
     return {
@@ -100,15 +102,15 @@ export default {
         children: "children",
         checkStrictly: true
       }, //级联搜索选择器配置项
-      categorykeys: [] ,
+      categorykeys: [],
       total: 0,
       tableData: [],
-      queryMap: { pageSize: 9, pageNum: 1 },
+      queryMap: {pageSize: 9, pageNum: 1},
       xData: [],
       yData: [],
       legendData: [], //饼图存放商品名称
       selected: {}, //存放选择的数据
-      seriesData: [{ name: "", value: "" }] //饼图数据
+      seriesData: [{name: "", value: ""}] //饼图数据
     };
   },
   methods: {
@@ -123,11 +125,11 @@ export default {
      * 加载库存信息
      */
     async getStockList() {
-      const { data: res } = await this.$http.get("business/product/findProductStocks", {
+      const {data: res} = await this.$http.get("business/product/findProductStocks", {
         params: this.queryMap
       });
       if (!res.success) {
-        return this.$message.error("获取商品库存列表失败:"+res.data.errorMsg);
+        return this.$message.error("获取商品库存列表失败:" + res.data.errorMsg);
       } else {
         this.total = res.data.total;
         this.tableData = res.data.rows;
@@ -136,7 +138,7 @@ export default {
         this.selected = {};
         const $this = this;
         //构建表格条形统计图的数据
-        this.tableData.forEach(function(e) {
+        this.tableData.forEach(function (e) {
           console.log(e)
           $this.xData.push(e.name);
           $this.yData.push(e.stock);
@@ -174,8 +176,8 @@ export default {
             dataZoom: {
               yAxisIndex: "none"
             },
-            dataView: { readOnly: false }, //  缩放
-            magicType: { type: ["bar"] }, ///　　折线  直方图切换
+            dataView: {readOnly: false}, //  缩放
+            magicType: {type: ["bar"]}, ///　　折线  直方图切换
             restore: {}, // 重置
             saveAsImage: {} // 导出图片
           }
@@ -195,26 +197,26 @@ export default {
             showBackground: true,
             data: this.yData,
             itemStyle: {
-                    normal: {
-　　　　　　　　　　　　　　//好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
-                        color: function(params) {
-                            // build a color map as your need.
-                            var colorList = [
-                              '#0780cf ','#fa6d1d ','#ac2026 ','#701866 ','#d22e8d ',
-                               '#FE8463','#a195c5 ','#FAD860','#F3A43B','#60C0DD',
-                               '#D7504B','#a195c5  ','#F4E001','#F0805A','#63b2ee'
-                            ];
-                            return colorList[params.dataIndex]
-                        },
-　　　　　　　　　　　　　　//以下为是否显示，显示位置和显示格式的设置了
-                        label: {
-                            show: true,
-                            position: 'top',
-//                             formatter: '{c}'
-                            formatter: '{b}\n{c}'
-                        }
-                    }
+              normal: {
+                //好，这里就是重头戏了，定义一个list，然后根据所以取得不同的值，这样就实现了，
+                color: function (params) {
+                  // build a color map as your need.
+                  var colorList = [
+                    '#0780cf ', '#fa6d1d ', '#ac2026 ', '#701866 ', '#d22e8d ',
+                    '#FE8463', '#a195c5 ', '#FAD860', '#F3A43B', '#60C0DD',
+                    '#D7504B', '#a195c5  ', '#F4E001', '#F0805A', '#63b2ee'
+                  ];
+                  return colorList[params.dataIndex]
                 },
+                //以下为是否显示，显示位置和显示格式的设置了
+                label: {
+                  show: true,
+                  position: 'top',
+//                             formatter: '{c}'
+                  formatter: '{b}\n{c}'
+                }
+              }
+            },
           },
 
         ]
@@ -234,7 +236,7 @@ export default {
 
           left: "left"
         },
-         toolbox: {
+        toolbox: {
           show: true,
           feature: {
             saveAsImage: {} // 导出图片
@@ -277,20 +279,20 @@ export default {
      * 商品所有的库存信息
      */
     async findAllProductStocks() {
-      const { data: res } = await this.$http.get("business/product/findAllStocks", {
+      const {data: res} = await this.$http.get("business/product/findAllStocks", {
         params: this.queryMap
       });
       if (!res.success) {
-        return this.$message.error("获取商品所有库存失败:"+res.data.errorMsg);
+        return this.$message.error("获取商品所有库存失败:" + res.data.errorMsg);
       } else {
         this.legendData = [];
         this.selected = {};
         this.seriesData = [{}];
         var $this = this;
         //构建饼图的数据对象
-        res.data.forEach(function(e) {
+        res.data.forEach(function (e) {
           $this.legendData.push(e.name);
-          $this.seriesData.push({ name: e.name, value: e.stock });
+          $this.seriesData.push({name: e.name, value: e.stock});
         });
 
         //重新绘制表格
@@ -312,11 +314,11 @@ export default {
      * 加载商品类别
      */
     async getCatetorys() {
-      const { data: res } = await this.$http.get(
-              "business/productCategory/categoryTree"
+      const {data: res} = await this.$http.get(
+          "business/productCategory/categoryTree"
       );
       if (!res.success) {
-        return this.$message.error("获取商品类别失败:"+res.data.errorMsg);
+        return this.$message.error("获取商品类别失败:" + res.data.errorMsg);
       } else {
         this.catetorys = res.data.rows;
       }
@@ -327,7 +329,7 @@ export default {
     this.getCatetorys();
     this.findAllProductStocks();
   },
-  mounted: function() {
+  mounted: function () {
     this.draw();
     this.drawRound();
   }

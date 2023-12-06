@@ -18,60 +18,62 @@
         </el-form-item>
         <el-form-item label="具体地点">
           <el-input
-            clearable
-            v-model="queryMap.name"
-            placeholder="请具体地点查询"
-            @clear="search"
-            class="input-with-el-select"
+              clearable
+              v-model="queryMap.name"
+              placeholder="请具体地点查询"
+              @clear="search"
+              class="input-with-el-select"
           ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
-          <el-button type="success" icon="el-icon-circle-plus-outline" v-hasPermission="'consumer:add'" @click="openAdd">添加</el-button>
+          <el-button type="success" icon="el-icon-circle-plus-outline" v-hasPermission="'consumer:add'"
+                     @click="openAdd">添加
+          </el-button>
         </el-form-item>
       </el-form>
 
       <!-- 表格区域 -->
       <template>
         <el-table
-          border
-          size="mini"
-          v-loading="loading"
-          stripe
-          :data="consumerData"
-          style="width: 100%;"
-          height="460"
+            border
+            size="mini"
+            v-loading="loading"
+            stripe
+            :data="consumerData"
+            style="width: 100%;"
+            height="460"
         >
           <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
           <el-table-column label="商品去向地址">
             <el-table-column
-                    prop="address"
-                    label="省份"
-                    width="120">
+                prop="address"
+                label="省份"
+                width="120">
               <template slot-scope="scope">
                 <span v-text="scope.row.address.split('/')[0]"></span>
               </template>
             </el-table-column>
             <el-table-column
-                    prop="address"
-                    label="市"
-                    width="120">
+                prop="address"
+                label="市"
+                width="120">
               <template slot-scope="scope">
                 <span v-text="scope.row.address.split('/')[1]"></span>
               </template>
             </el-table-column>
             <el-table-column
-                    prop="address"
-                    label="区县"
-                    width="100">
+                prop="address"
+                label="区县"
+                width="100">
               <template slot-scope="scope">
                 <span v-text="scope.row.address.split('/')[2]"></span>
               </template>
             </el-table-column>
             <el-table-column
-                    prop="name"
-                    label="地址"
-                    width="200">
+                prop="name"
+                label="地址"
+                width="200">
             </el-table-column>
           </el-table-column>
 
@@ -81,54 +83,58 @@
           <el-table-column prop="sort" label="排序" width="100"></el-table-column>
           <el-table-column label="操作" fixed="right" width="150">
             <template slot-scope="scope">
-              <el-button v-hasPermission="'consumer:edit'" type="text" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)">编辑</el-button>
+              <el-button v-hasPermission="'consumer:edit'" type="text" size="mini" icon="el-icon-edit"
+                         @click="edit(scope.row.id)">编辑
+              </el-button>
 
-              <el-button v-hasPermission="'consumer:delete'" type="text" size="mini" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
+              <el-button v-hasPermission="'consumer:delete'" type="text" size="mini" icon="el-icon-delete"
+                         @click="del(scope.row.id)">删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
       </template>
       <!-- 分页 -->
       <el-pagination
-        style="margin-top:10px;"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="this.queryMap.pageNum"
-        :page-sizes="[ 10, 15, 20]"
-        :page-size="this.queryMap.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+          style="margin-top:10px;"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="this.queryMap.pageNum"
+          :page-sizes="[ 10, 15, 20]"
+          :page-size="this.queryMap.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
       ></el-pagination>
       <!-- 系别添加弹出框 -->
       <el-dialog
-        title="添加商品去处"
-        :visible.sync="addDialogVisible"
-        width="50%"
-        @close="closeAddDialog"
+          title="添加商品去处"
+          :visible.sync="addDialogVisible"
+          width="50%"
+          @close="closeAddDialog"
       >
         <span>
           <el-form
-            :model="addRuleForm"
-            :rules="addRules"
-            ref="addRuleFormRef"
-            label-width="100px"
-            class="demo-ruleForm"
+              :model="addRuleForm"
+              :rules="addRules"
+              ref="addRuleFormRef"
+              label-width="100px"
+              class="demo-ruleForm"
           >
             <el-row>
               <el-col :span="8">
                 <div class="grid-content bg-purple"></div>
                 <el-form-item label="省份" prop="valueProvince">
                   <el-select
-                    v-model="addRuleForm.valueProvince"
-                    placeholder="请选择省"
-                    @change="changeProvince"
+                      v-model="addRuleForm.valueProvince"
+                      placeholder="请选择省"
+                      @change="changeProvince"
                   >
                     <el-option
-                      v-for="item in provinceList"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
+                        v-for="item in provinceList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -137,15 +143,15 @@
                 <div class="grid-content bg-purple-light">
                   <el-form-item label="城市" prop="valueCity">
                     <el-select
-                      v-model="addRuleForm.valueCity"
-                      placeholder="请选择市"
-                      @change="changeCity"
+                        v-model="addRuleForm.valueCity"
+                        placeholder="请选择市"
+                        @change="changeCity"
                     >
                       <el-option
-                        v-for="item in cityOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
+                          v-for="item in cityOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -155,15 +161,15 @@
                 <div class="grid-content bg-purple">
                   <el-form-item label="区县" prop="valueOrigin">
                     <el-select
-                      v-model="addRuleForm.valueOrigin"
-                      placeholder="请选择区"
-                      @change="changeOrigin"
+                        v-model="addRuleForm.valueOrigin"
+                        placeholder="请选择区"
+                        @change="changeOrigin"
                     >
                       <el-option
-                        v-for="item in originOptions"
-                        :key="item.label"
-                        :label="item.label"
-                        :value="item.value"
+                          v-for="item in originOptions"
+                          :key="item.label"
+                          :label="item.label"
+                          :value="item.value"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -195,18 +201,18 @@
 
       <!-- 系别编辑弹出框 -->
       <el-dialog
-        title="更新商品去处"
-        :visible.sync="editDialogVisible"
-        width="50%"
-        @close="closeEditDialog"
+          title="更新商品去处"
+          :visible.sync="editDialogVisible"
+          width="50%"
+          @close="closeEditDialog"
       >
         <span>
           <el-form
-            :model="editRuleForm"
-            :rules="addRules"
-            ref="editRuleFormRef"
-            label-width="100px"
-            class="demo-ruleForm"
+              :model="editRuleForm"
+              :rules="addRules"
+              ref="editRuleFormRef"
+              label-width="100px"
+              class="demo-ruleForm"
           >
             <el-form-item label="省市区县" prop="address">
               <el-input v-model="editRuleForm.address" disabled></el-input>
@@ -265,28 +271,28 @@ export default {
       addDialogVisible: false, //添加弹框是否显示
       total: 0, //总共多少条数据
       consumerData: [], //表格数据
-      queryMap: { pageNum: 1, pageSize: 10, name: "" }, //查询对象
+      queryMap: {pageNum: 1, pageSize: 10, name: ""}, //查询对象
       addRuleForm: {}, //添加表单数据
       editRuleForm: {}, //修改表单数据
       deans: [], //所有系主任
       addRules: {
         name: [
-          { required: true, message: "请输入商品去处名称", trigger: "blur" },
-          { min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "blur" }
+          {required: true, message: "请输入商品去处名称", trigger: "blur"},
+          {min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "blur"}
         ],
         address: [
-          { required: true, message: "请输入地址信息", trigger: "blur" },
-          { min: 2, max: 12, message: "长度在 2 到 12 个字符", trigger: "blur" }
+          {required: true, message: "请输入地址信息", trigger: "blur"},
+          {min: 2, max: 12, message: "长度在 2 到 12 个字符", trigger: "blur"}
         ],
-        sort: [{ required: true, message: "请输入排序号", trigger: "blur" }],
+        sort: [{required: true, message: "请输入排序号", trigger: "blur"}],
         valueProvince: [
-          { required: true, message: "请输入省份", trigger: "blur" }
+          {required: true, message: "请输入省份", trigger: "blur"}
         ],
-        valueCity: [{ required: true, message: "请输入城市", trigger: "blur" }],
+        valueCity: [{required: true, message: "请输入城市", trigger: "blur"}],
         valueOrigin: [
-          { required: true, message: "请输入区县", trigger: "blur" }
+          {required: true, message: "请输入区县", trigger: "blur"}
         ],
-        contact: [{ required: true, message: "请输入联系人", trigger: "blur" }],
+        contact: [{required: true, message: "请输入联系人", trigger: "blur"}],
         phone: [
           {
             required: true,
@@ -319,13 +325,13 @@ export default {
     //删除商品去处
     async del(id) {
       var res = await this.$confirm(
-        "此操作将永久删除该用户, 是否继续?",
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }
+          "此操作将永久删除该用户, 是否继续?",
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }
       ).catch(() => {
         this.$message({
           type: "info",
@@ -333,7 +339,7 @@ export default {
         });
       });
       if (res === "confirm") {
-        const { data: res } = await this.$http.delete("business/consumer/delete/" + id);
+        const {data: res} = await this.$http.delete("business/consumer/delete/" + id);
         if (res.success) {
           this.$message.success("商品去处删除成功");
           await this.getConsumerList();
@@ -346,11 +352,11 @@ export default {
     async update() {
       this.$refs.editRuleFormRef.validate(async valid => {
         if (!valid) {
-          return;
+
         } else {
-          const { data: res } = await this.$http.put(
-            "business/consumer/update/" + this.editRuleForm.id,
-            this.editRuleForm
+          const {data: res} = await this.$http.put(
+              "business/consumer/update/" + this.editRuleForm.id,
+              this.editRuleForm
           );
           if (res.success) {
             this.$notify({
@@ -373,7 +379,7 @@ export default {
      */
     async edit(id) {
       this._getJsonData();
-      const { data: res } = await this.$http.get("business/consumer/edit/" + id);
+      const {data: res} = await this.$http.get("business/consumer/edit/" + id);
       if (res.success) {
         this.editRuleForm = res.data;
       } else {
@@ -386,17 +392,17 @@ export default {
       this.$refs.addRuleFormRef.validate(async valid => {
         if (!valid) {
           console.log(this.addRuleForm);
-          return;
+
         } else {
           this.addRuleForm.address =
-            this.addRuleForm.province +
-            "/" +
-            this.addRuleForm.city +
-            "/" +
-            this.addRuleForm.origin;
-          const { data: res } = await this.$http.post(
-            "/business/consumer/add",
-            this.addRuleForm
+              this.addRuleForm.province +
+              "/" +
+              this.addRuleForm.city +
+              "/" +
+              this.addRuleForm.origin;
+          const {data: res} = await this.$http.post(
+              "/business/consumer/add",
+              this.addRuleForm
           );
           if (res.success) {
             this.$message.success("商品去处添加成功");
@@ -413,11 +419,11 @@ export default {
      * 加载商品去处列表
      */
     async getConsumerList() {
-      const { data: res } = await this.$http.get("business/consumer/findConsumerList", {
+      const {data: res} = await this.$http.get("business/consumer/findConsumerList", {
         params: this.queryMap
       });
       if (!res.success) {
-        return this.$message.error("获取用户列表失败:"+res.data.errorMsg);
+        return this.$message.error("获取用户列表失败:" + res.data.errorMsg);
       } else {
         this.total = res.data.total;
         this.consumerData = res.data.rows;
@@ -458,16 +464,16 @@ export default {
         if (val.toString() === this.provinceList[index].value) {
           this.cityOptions = this.provinceList[index].children;
           this.addRuleForm.valueCity = this.provinceList[
-            index
-          ].children[0].value; //设置市的值
+              index
+              ].children[0].value; //设置市的值
           this.addRuleForm.city = this.provinceList[index].children[0].label;
 
           this.addRuleForm.valueOrigin = this.provinceList[
-            index
-          ].children[0].children[0].value; //设置县的值
+              index
+              ].children[0].children[0].value; //设置县的值
           this.addRuleForm.origin = this.provinceList[
-            index
-          ].children[0].children[0].label;
+              index
+              ].children[0].children[0].label;
 
           this.originOptions = this.provinceList[index].children[0].children;
           //set value
@@ -528,8 +534,8 @@ export default {
         for (let index in this.provinceList) {
           for (let index1 in this.cityList) {
             if (
-              this.provinceList[index].value.slice(0, 2) ===
-              this.cityList[index1].value.slice(0, 2)
+                this.provinceList[index].value.slice(0, 2) ===
+                this.cityList[index1].value.slice(0, 2)
             ) {
               this.provinceList[index].children.push(this.cityList[index1]);
             }
@@ -538,8 +544,8 @@ export default {
         for (let item1 in this.cityList) {
           for (let item2 in this.originList) {
             if (
-              this.originList[item2].value.slice(0, 4) ===
-              this.cityList[item1].value.slice(0, 4)
+                this.originList[item2].value.slice(0, 4) ===
+                this.cityList[item1].value.slice(0, 4)
             ) {
               this.cityList[item1].children.push(this.originList[item2]);
             }

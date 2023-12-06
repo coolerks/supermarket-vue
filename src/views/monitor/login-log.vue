@@ -20,22 +20,24 @@
           <el-input v-model="queryMap.location" placeholder="请输入登入地址查询"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button  icon="el-icon-search" @click="search" type="primary">查询</el-button>
+          <el-button icon="el-icon-search" @click="search" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="deleteFileOrDirectory(sels)" icon="el-icon-delete"  :disabled="this.sels.length === 0">批量</el-button>
+          <el-button @click="deleteFileOrDirectory(sels)" icon="el-icon-delete" :disabled="this.sels.length === 0">
+            批量
+          </el-button>
         </el-form-item>
       </el-form>
       <!-- 表格区域 -->
       <template>
         <el-table
-          border
-          stripe
-          size="mini"
-          :data="LoginLogData"
-          style="width: 100%;"
-          height="460"
-          @selection-change="selsChange"
+            border
+            stripe
+            size="mini"
+            :data="LoginLogData"
+            style="width: 100%;"
+            height="460"
+            @selection-change="selsChange"
         >
           <el-table-column type="selection" width="55" align="center"></el-table-column>
           <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
@@ -48,27 +50,28 @@
           <el-table-column label="操作" width="100px;">
             <template slot-scope="scope">
               <el-button
-               v-hasPermission="'loginLog:delete'"
-                type="text"
-                size="mini"
-                icon="el-icon-delete"
-                @click="del(scope.row.id)"
-              >删除</el-button>
+                  v-hasPermission="'loginLog:delete'"
+                  type="text"
+                  size="mini"
+                  icon="el-icon-delete"
+                  @click="del(scope.row.id)"
+              >删除
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
       </template>
       <!-- 分页 -->
       <el-pagination
-        style="margin-top:10px;"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="this.queryMap.pageNum"
-        :page-sizes="[ 10, 15, 20]"
-        :page-size="this.queryMap.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+          style="margin-top:10px;"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="this.queryMap.pageNum"
+          :page-sizes="[ 10, 15, 20]"
+          :page-size="this.queryMap.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
       ></el-pagination>
     </el-card>
   </div>
@@ -81,20 +84,20 @@ export default {
       sels: [], //选中的值显示
       LoginLogData: [],
       total: 0, //总共多少条数据
-      queryMap: { pageNum: 1, pageSize: 10, location: "" } //查询对象
+      queryMap: {pageNum: 1, pageSize: 10, location: ""} //查询对象
     };
   },
   methods: {
     async deleteFileOrDirectory() {
       var ids = this.sels.map(item => item.id).join(); //获取所有选中行的id组成的字符串，以逗号分隔
-       var res = await this.$confirm(
-        "此操作将永久批量删除登入日志, 是否继续?",
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }
+      var res = await this.$confirm(
+          "此操作将永久批量删除登入日志, 是否继续?",
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }
       ).catch(() => {
         this.$message({
           type: "info",
@@ -102,7 +105,7 @@ export default {
         });
       });
       if (res === "confirm") {
-        const { data: res } = await this.$http.delete("system/loginLog/batchDelete/" + ids);
+        const {data: res} = await this.$http.delete("system/loginLog/batchDelete/" + ids);
         if (res.success) {
           this.$message.success("登入日志删除成功");
           await this.getLoginLogList();
@@ -122,11 +125,11 @@ export default {
 
     //加载登入日志列表
     async getLoginLogList() {
-      const { data: res } = await this.$http.get("system/loginLog/findLoginLogList", {
+      const {data: res} = await this.$http.get("system/loginLog/findLoginLogList", {
         params: this.queryMap
       });
       if (!res.success) {
-        return this.$message.error("获取列表失败:"+res.data.errorMsg);
+        return this.$message.error("获取列表失败:" + res.data.errorMsg);
       } else {
         this.total = res.data.total;
         this.LoginLogData = res.data.rows;
@@ -135,13 +138,13 @@ export default {
     //删除登入日志
     async del(id) {
       const res = await this.$confirm(
-              "此操作将永久删除该登入日志, 是否继续?",
-              "提示",
-              {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
-              }
+          "此操作将永久删除该登入日志, 是否继续?",
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }
       ).catch(() => {
         this.$message({
           type: "info",
@@ -149,7 +152,7 @@ export default {
         });
       });
       if (res === "confirm") {
-        const { data: res } = await this.$http.delete("system/loginLog/delete/" + id);
+        const {data: res} = await this.$http.delete("system/loginLog/delete/" + id);
         if (res.success) {
           this.$message.success("登入日志删除成功");
           await this.getLoginLogList();

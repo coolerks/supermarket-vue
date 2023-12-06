@@ -33,11 +33,11 @@
         <el-col style="margin-top:10px;" v-for="image in this.list" :key="image.id" :span="6">
           <div class="grid-content bg-purple">
             <el-image
-              :alt="image.path"
-              :fit="fits"
-              :preview-src-list="srcList"
-              style="width:200px;height:170px"
-              :src="image.path"
+                :alt="image.path"
+                :fit="fits"
+                :preview-src-list="srcList"
+                style="width:200px;height:170px"
+                :src="image.path"
             >
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline"></i>
@@ -45,20 +45,22 @@
             </el-image>
             <div>
               <el-tag
-                size="mini"
-                effect="dark"
-                type="success"
-                style="margin-left:50px;"
-              >{{image.width}}px X {{image.height}}px</el-tag>
+                  size="mini"
+                  effect="dark"
+                  type="success"
+                  style="margin-left:50px;"
+              >{{ image.width }}px X {{ image.height }}px
+              </el-tag>
               <el-popconfirm title="这是一段内容确定删除吗？" @onConfirm="del(image.id)">
                 <el-button
-                  v-hasPermission="'image:delete'"
-                  style="margin-left:30px;"
-                  icon="el-icon-delete"
-                  size="mini"
-                  type="text"
-                  slot="reference"
-                >删除</el-button>
+                    v-hasPermission="'image:delete'"
+                    style="margin-left:30px;"
+                    icon="el-icon-delete"
+                    size="mini"
+                    type="text"
+                    slot="reference"
+                >删除
+                </el-button>
               </el-popconfirm>
             </div>
           </div>
@@ -67,31 +69,31 @@
 
       <!-- 分页 -->
       <el-pagination
-        style="margin-top:30px;"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryMap.pageNum"
-        :page-sizes="[8, 20, 30, 40]"
-        :page-size="queryMap.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+          style="margin-top:30px;"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="queryMap.pageNum"
+          :page-sizes="[8, 20, 30, 40]"
+          :page-size="queryMap.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
       ></el-pagination>
       <!-- 上传弹出框 -->
       <el-dialog title="上传图片附件" @close="closeUpload" :visible.sync="centerDialogVisible" width="38%" center>
         <span>
           <el-upload
-            accept="image/*"
-            :auto-upload="false"
-            :multiple="true"
-            ref="upload"
-            :limit="10"
-            :on-exceed="exceed"
-            class="upload-demo"
-            drag
-            :headers="headerObject"
-            :on-success="handleUploadSuccess"
-            :action="uploadUrl"
+              accept="image/*"
+              :auto-upload="false"
+              :multiple="true"
+              ref="upload"
+              :limit="10"
+              :on-exceed="exceed"
+              class="upload-demo"
+              drag
+              :headers="headerObject"
+              :on-success="handleUploadSuccess"
+              :action="uploadUrl"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -101,9 +103,10 @@
             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb,最多支持10张图片一起上传</div>
           </el-upload>
         </span>
-       <span slot="footer" class="dialog-footer">
-          <el-button @click="closeUpload" size="small"  >取消返回</el-button>
-          <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="closeUpload" size="small">取消返回</el-button>
+          <el-button style="margin-left: 10px;" size="small" type="success"
+                     @click="submitUpload">上传到服务器</el-button>
         </span>
       </el-dialog>
     </el-card>
@@ -115,7 +118,7 @@
 export default {
   data() {
     return {
-      uploadUrl:this.BASE_API_URL+"system/upload/image",
+      uploadUrl: this.BASE_API_URL + "system/upload/image",
       centerDialogVisible: false,
       loading: true,
       total: 0,
@@ -132,8 +135,8 @@ export default {
     /**
      * 取消上传
      */
-    closeUpload(){
-      this.centerDialogVisible=false;
+    closeUpload() {
+      this.centerDialogVisible = false;
       this.$refs.upload.clearFiles();
     },
     /**
@@ -152,7 +155,7 @@ export default {
      *
      * 点击上传到服务器
      */
-     submitUpload() {
+    submitUpload() {
       this.$refs.upload.submit();
     },
     /**
@@ -171,17 +174,17 @@ export default {
      * 加载附件列表
      */
     async ageImageList() {
-      const { data: res } = await this.$http.get("system/upload/findImageList", {
+      const {data: res} = await this.$http.get("system/upload/findImageList", {
         params: this.queryMap
       });
       if (!res.success) {
-        return this.$message.error("获取附件列表失败:"+res.data.errorMsg);
+        return this.$message.error("获取附件列表失败:" + res.data.errorMsg);
       } else {
         const $this = this;
         this.total = res.data.total;
         this.list = res.data.list;
         this.srcList = [];
-        this.list.forEach(function(item) {
+        this.list.forEach(function (item) {
           $this.srcList.push(item.path);
         });
       }
@@ -206,7 +209,7 @@ export default {
     /**
      * 超出允许上传的时候
      */
-    exceed(){
+    exceed() {
       this.$message.warning("超出允许上传图片的数量");
     }
   },

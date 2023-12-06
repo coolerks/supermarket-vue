@@ -10,51 +10,52 @@ import axios from 'axios'
 import echarts from 'echarts'
 import ZkTable from 'vue-table-with-tree-grid'
 import {hasPermission} from './utils/permissionDirect'
+
 const Plugins = [hasPermission]
 
 Plugins.map((plugin) => {
-    Vue.use(plugin)
+  Vue.use(plugin)
 })
 Vue.use(ZkTable)
 Vue.use(echarts)
 NProgress.configure({ease: 'ease', speed: 500});
 NProgress.configure({minimum: 0.3});
 
-let BASE_API_URL="http://www.localhost:8989/";
+let BASE_API_URL = "http://www.localhost:8989/";
 //const BASE_API_URL="https://www.zykhome.club/api/";
 
 Vue.prototype.$http = axios
-Vue.prototype.BASE_API_URL=BASE_API_URL
+Vue.prototype.BASE_API_URL = BASE_API_URL
 axios.defaults.baseURL = BASE_API_URL
 
 //请求拦截器
 axios.interceptors.request.use(config => {
-        NProgress.start()
-        config.headers.Authorization = LocalStorage.get(LOCAL_KEY_XINGUAN_ACCESS_TOKEN);
-        return config;
-    }
-    , error => {
-        return Promise.reject(error)
-    });
+    NProgress.start()
+    config.headers.Authorization = LocalStorage.get(LOCAL_KEY_XINGUAN_ACCESS_TOKEN);
+    return config;
+  }
+  , error => {
+    return Promise.reject(error)
+  });
 
 //响应拦截器
 axios.interceptors.response.use(
-    function (response) {
-        NProgress.done();
-        const res = response.data;
-        if (res.success) {
-            return response;
-        }
-
-        if (res.data!=null&&res.data.errorCode === 50001) {
-            LocalStorage.clearAll();
-            return router.push("/login");
-        }
-        return response;
-    },
-    function (error) {
-        return Promise.reject(error)
+  function (response) {
+    NProgress.done();
+    const res = response.data;
+    if (res.success) {
+      return response;
     }
+
+    if (res.data != null && res.data.errorCode === 50001) {
+      LocalStorage.clearAll();
+      return router.push("/login");
+    }
+    return response;
+  },
+  function (error) {
+    return Promise.reject(error)
+  }
 )
 
 
@@ -64,7 +65,7 @@ axios.interceptors.response.use(
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 new Vue({
-    router,
-    store,
-    render: h => h(App)
+  router,
+  store,
+  render: h => h(App)
 }).$mount('#app')
